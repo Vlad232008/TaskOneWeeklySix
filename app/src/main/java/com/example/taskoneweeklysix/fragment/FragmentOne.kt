@@ -1,6 +1,7 @@
 package com.example.taskoneweeklysix.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,10 @@ import com.example.taskoneweeklysix.manager.BaseFragment
 
 
 class FragmentOne : BaseFragment() {
-    private val const:Double = 4.0
-    private var x:Double = 1.0
+    private var const:Double = 4.0
+    private var x:Int = 1
     private var count = 0
-    private var y: Double = 0.0
+    private var y: Double = 4.0
     private lateinit var binding: FragmentOneBinding
     override fun onClickNew() {
     }
@@ -30,15 +31,19 @@ class FragmentOne : BaseFragment() {
         Thread{
             while (true) {
                 if (count%2 == 0) {
-                    y = (const/x - const/(x + 2))
+                    y -= const / (x + 2)
                     x += 2
                 } else {
-                    y = (const/x + const/(x + 2))
+                    y += const / (x + 2)
                     x += 2
                 }
-                binding.tvOne.text = y.toString()
+                binding.tvOne.text =  y.toString()
                 count++
+                Log.d("MyLog", "y = $y")
+                Log.d("MyLog", "x = $x")
+                Log.d("MyLog", "count = $count")
             }
+
         }.start()
         return binding.root
     }
