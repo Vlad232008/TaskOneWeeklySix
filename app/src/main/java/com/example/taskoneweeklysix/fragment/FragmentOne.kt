@@ -40,7 +40,7 @@ class FragmentOne : BaseFragment() {
                     z = y.toString()
                     x += 2
                 }
-                if (x % 1000000 == 1) {
+                if (x % 100000 == 1) {
                     binding.tvOne.text = z.substring(0,300)
                 }
                 count++
