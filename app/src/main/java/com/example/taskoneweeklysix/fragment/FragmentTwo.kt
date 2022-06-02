@@ -33,6 +33,7 @@ class FragmentTwo : BaseFragment() {
             binding.cMeter.base = SystemClock.elapsedRealtime()
             binding.cMeter.start()
         }
+        //binding.cMeter.text = ""
         return binding.root
     }
     companion object {
