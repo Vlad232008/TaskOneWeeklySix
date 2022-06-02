@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.taskoneweeklysix.databinding.FragmentOneBinding
 import com.example.taskoneweeklysix.manager.BaseFragment
+import java.text.DecimalFormat
 
 
 class FragmentOne : BaseFragment() {
@@ -28,6 +29,7 @@ class FragmentOne : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOneBinding.inflate(inflater, container, false)
+        val decimalFormat = DecimalFormat("#.###########################################################")
         Thread{
             while (true) {
                 if (count%2 == 0.toLong()) {
@@ -38,7 +40,8 @@ class FragmentOne : BaseFragment() {
                     x += 2
                 }
                 if (x%10000000 == 1) {
-                    binding.tvOne.text = y.toString()
+                    val result = decimalFormat.format(y)
+                    binding.tvOne.text = result.toString()
                 }
                 count++
                 Log.d("MyLog", count.toString())
