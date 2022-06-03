@@ -57,7 +57,7 @@ class FragmentOne : BaseFragment() {
                         z = y.toString()
                         x += 2
                     }
-                    if (Counter % 10000 == 0.0) {
+                    if (Counter % 1000 == 0.0) {
                         val msg = handler.obtainMessage()
                         msg.obj = show
                         handler.sendMessage(msg)
