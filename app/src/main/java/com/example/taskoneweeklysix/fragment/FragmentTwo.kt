@@ -1,18 +1,20 @@
 package com.example.taskoneweeklysix.fragment
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.taskoneweeklysix.R
 import com.example.taskoneweeklysix.databinding.FragmentTwoBinding
-import com.example.taskoneweeklysix.manager.BaseFragment
 
-class FragmentTwo : BaseFragment() {
+class FragmentTwo : Fragment() {
     private lateinit var binding: FragmentTwoBinding
-    override fun onClickNew() {
-    }
-
+    private var count = 0
+    private var i = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -22,18 +24,31 @@ class FragmentTwo : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTwoBinding.inflate(inflater, container, false)
-        binding.cMeter.start()
+        binding.chronometer.start()
         binding.btnPlay.setOnClickListener {
-            binding.cMeter.start()
+            binding.chronometer.base = SystemClock.elapsedRealtime()
+            binding.chronometer.start()
         }
         binding.btnPause.setOnClickListener {
-            binding.cMeter.stop()
+            binding.chronometer.stop()
         }
         binding.btnReset.setOnClickListener {
-            binding.cMeter.base = SystemClock.elapsedRealtime()
-            binding.cMeter.start()
+            binding.chronometer.base = SystemClock.elapsedRealtime()
         }
-        //binding.cMeter.text = ""
+        binding.chronometer.setOnChronometerTickListener {
+            val elapsedMillis: Long = (SystemClock.elapsedRealtime() - binding.chronometer.base)
+            if (elapsedMillis/i in 20001..20999) {
+                i++
+                if (count == 0) {
+                    count = 1
+                    binding.constLayout.setBackgroundResource(R.color.black)
+                }
+                else {
+                    count = 0
+                    binding.constLayout.setBackgroundResource(R.color.white)
+                }
+            }
+        }
         return binding.root
     }
     companion object {

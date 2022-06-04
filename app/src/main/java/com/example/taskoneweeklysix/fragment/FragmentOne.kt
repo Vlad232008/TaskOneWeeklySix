@@ -7,12 +7,12 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.taskoneweeklysix.databinding.FragmentOneBinding
-import com.example.taskoneweeklysix.manager.BaseFragment
 import java.math.BigDecimal
 
 
-class FragmentOne : BaseFragment() {
+class FragmentOne : Fragment() {
     private var const = BigDecimal(4)
     private var Counter: Double = 0.0
     private var result = BigDecimal(3)
@@ -23,8 +23,6 @@ class FragmentOne : BaseFragment() {
     private var x = 1
     private var z = ""
     private lateinit var binding: FragmentOneBinding
-    override fun onClickNew() {
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,8 +80,8 @@ class FragmentOne : BaseFragment() {
     }
     private var handler1: Handler = @SuppressLint("HandlerLeak")
     object : Handler() {
-        override fun handleMessage(msg: Message) {
-            binding.tvTwo.text = msg.obj.toString()
+        override fun handleMessage(msg1: Message) {
+            binding.tvTwo.text = msg1.obj.toString()
         }
     }
 
