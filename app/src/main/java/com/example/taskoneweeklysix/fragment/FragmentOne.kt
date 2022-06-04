@@ -15,10 +15,12 @@ import java.math.BigDecimal
 class FragmentOne : Fragment() {
     private var const = BigDecimal(4)
     private var Counter: Double = 0.0
+    private var Counter2: Double = 0.0
     private var result = BigDecimal(3)
     private var show = ""
     private var formula: Double = 0.0
     private var count = 0
+    private var count2 = 0
     private var y = BigDecimal(4)
     private var x = 1
     private var z = ""
@@ -46,27 +48,38 @@ class FragmentOne : Fragment() {
                         result -= (const.divide(BigDecimal(formula), 500, 0))
                         show = result.toString()
                     }
-                    if (count%2 ==0) {
-                        y -= (BigDecimal(4).divide(BigDecimal(x+2),500,0))
-                        z = y.toString()
-                        x += 2
-                    } else {
-                        y += (BigDecimal(4).divide(BigDecimal(x+2),500,0))
-                        z = y.toString()
-                        x += 2
-                    }
                     if (Counter % 1000 == 0.0) {
                         val msg = handler.obtainMessage()
                         msg.obj = show
                         handler.sendMessage(msg)
-                        val msg1 = handler1.obtainMessage()
-                        msg1.obj = z
-                        handler1.sendMessage(msg1)
                     }
                     count++
                 }
             }.start()
         }
+        val runnable2 = Runnable {
+            Thread {
+                while (true) {
+                    Counter2 += 1
+                    if (count2%2 ==0) {
+                        y -= (BigDecimal(4).divide(BigDecimal(x+2),500,0))
+                        z = y.toString()
+                    } else {
+                        y += (BigDecimal(4).divide(BigDecimal(x+2),500,0))
+                        z = y.toString()
+                    }
+                    x += 2
+                    if (Counter2 % 1000 == 0.0) {
+                        val msg1 = handler1.obtainMessage()
+                        msg1.obj = z
+                        handler1.sendMessage(msg1)
+                    }
+                    count2++
+                }
+            }.start()
+        }
+        val thread2 = Thread(runnable2)
+        thread2.start()
         val thread = Thread(runnable)
         thread.start()
         return binding.root
