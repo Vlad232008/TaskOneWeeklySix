@@ -13,88 +13,85 @@ import java.math.BigDecimal
 
 
 class FragmentOne : Fragment() {
-    private var const = BigDecimal(4)
-    private var Counter: Double = 0.0
-    private var Counter2: Double = 0.0
-    private var result = BigDecimal(3)
-    private var show = ""
+    private var resultOne = BigDecimal(3)
+    private var resultTwo = BigDecimal(4)
+    private var counterOne: Double = 0.0
+    private var counterTwo: Double = 0.0
+    private var showOne = ""
+    private var showTwo = ""
     private var formula: Double = 0.0
-    private var count = 0
-    private var count2 = 0
-    private var y = BigDecimal(4)
-    private var x = 1
-    private var z = ""
-    private lateinit var binding: FragmentOneBinding
+    private var countTwo = 0
+    private var divider = 1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var binding: FragmentOneBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOneBinding.inflate(inflater, container, false)
-        val runnable = Runnable {
-            Thread {
-                while (true) {
-                    Counter += 1
-                    if (Counter % 2 == 1.0) {
-                        formula = Counter * 2 * (Counter * 2 + 1) * (Counter * 2 + 2)
-                        result += (const.divide(BigDecimal(formula), 500, 0))
-                        show = result.toString()
-                    } else {
-                        formula = Counter * 2 * (Counter * 2 + 1) * (Counter * 2 + 2)
-                        result -= (const.divide(BigDecimal(formula), 500, 0))
-                        show = result.toString()
-                    }
-                    if (Counter % 1000 == 0.0) {
-                        val msg = handler.obtainMessage()
-                        msg.obj = show
-                        handler.sendMessage(msg)
-                    }
-                    count++
-                }
-            }.start()
-        }
-        val runnable2 = Runnable {
-            Thread {
-                while (true) {
-                    Counter2 += 1
-                    if (count2%2 ==0) {
-                        y -= (BigDecimal(4).divide(BigDecimal(x+2),500,0))
-                        z = y.toString()
-                    } else {
-                        y += (BigDecimal(4).divide(BigDecimal(x+2),500,0))
-                        z = y.toString()
-                    }
-                    x += 2
-                    if (Counter2 % 1000 == 0.0) {
-                        val msg1 = handler1.obtainMessage()
-                        msg1.obj = z
-                        handler1.sendMessage(msg1)
-                    }
-                    count2++
-                }
-            }.start()
-        }
-        val thread2 = Thread(runnable2)
-        thread2.start()
-        val thread = Thread(runnable)
-        thread.start()
+        threadFormulaOne()
+        threadFormulaTwo()
         return binding.root
     }
-
-    private var handler: Handler = @SuppressLint("HandlerLeak")
+    private fun threadFormulaOne(){
+        val formulaOne = Runnable {
+            Thread {
+                while (true) {
+                    counterOne += 1
+                    if (counterOne % 2 == 1.0) {
+                        formula = counterOne * 2 * (counterOne * 2 + 1) * (counterOne * 2 + 2)
+                        resultOne += (BigDecimal(4).divide(BigDecimal(formula), 300, 0))
+                    } else {
+                        formula = counterOne * 2 * (counterOne * 2 + 1) * (counterOne * 2 + 2)
+                        resultOne -= (BigDecimal(4).divide(BigDecimal(formula), 300, 0))
+                    }
+                    showOne = resultOne.toString()
+                    if (counterOne % 1000 == 0.0) {
+                        val msg = handlerOne.obtainMessage()
+                        msg.obj = showOne
+                        handlerOne.sendMessage(msg)
+                    }
+                }
+            }.start()
+        }
+        val threadOne = Thread(formulaOne)
+        threadOne.start()
+    }
+    private fun threadFormulaTwo(){
+        val formulaTwo = Runnable {
+            Thread {
+                while (true) {
+                    counterTwo += 1
+                    if (countTwo%2 ==0) {
+                        resultTwo -= (BigDecimal(4).divide(BigDecimal(divider+2),300,0))
+                    } else {
+                        resultTwo += (BigDecimal(4).divide(BigDecimal(divider+2),300,0))
+                    }
+                    showTwo = resultTwo.toString()
+                    divider += 2
+                    if (counterTwo % 1000 == 0.0) {
+                        val msg1 = handlerTwo.obtainMessage()
+                        msg1.obj = showTwo
+                        handlerTwo.sendMessage(msg1)
+                    }
+                    countTwo++
+                }
+            }.start()
+        }
+        val threadTwo = Thread(formulaTwo)
+        threadTwo.start()
+    }
+    private var handlerOne: Handler = @SuppressLint("HandlerLeak")
     object : Handler() {
-        override fun handleMessage(msg: Message) {
-            binding.tvOne.text = msg.obj.toString()
+        override fun handleMessage(msgOneFormula: Message) {
+            binding.tvOne.text = msgOneFormula.obj.toString()
         }
     }
-    private var handler1: Handler = @SuppressLint("HandlerLeak")
+    private var handlerTwo: Handler = @SuppressLint("HandlerLeak")
     object : Handler() {
-        override fun handleMessage(msg1: Message) {
-            binding.tvTwo.text = msg1.obj.toString()
+        override fun handleMessage(msgTwoFormula: Message) {
+            binding.tvTwo.text = msgTwoFormula.obj.toString()
         }
     }
 

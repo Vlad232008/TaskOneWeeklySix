@@ -24,28 +24,29 @@ class FragmentTwo : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTwoBinding.inflate(inflater, container, false)
-        binding.chronometer.start()
-        binding.btnPlay.setOnClickListener {
-            binding.chronometer.base = SystemClock.elapsedRealtime()
+        Thread {
             binding.chronometer.start()
-        }
-        binding.btnPause.setOnClickListener {
-            binding.chronometer.stop()
-        }
-        binding.btnReset.setOnClickListener {
-            binding.chronometer.base = SystemClock.elapsedRealtime()
-        }
-        binding.chronometer.setOnChronometerTickListener {
-            val elapsedMillis: Long = (SystemClock.elapsedRealtime() - binding.chronometer.base)
-            if (elapsedMillis/i in 20001..20999) {
-                i++
-                if (count == 0) {
-                    count = 1
-                    binding.constLayout.setBackgroundResource(R.color.black)
-                }
-                else {
-                    count = 0
-                    binding.constLayout.setBackgroundResource(R.color.white)
+            binding.btnPlay.setOnClickListener {
+                binding.chronometer.base = SystemClock.elapsedRealtime()
+                binding.chronometer.start()
+            }
+            binding.btnPause.setOnClickListener {
+                binding.chronometer.stop()
+            }
+            binding.btnReset.setOnClickListener {
+                binding.chronometer.base = SystemClock.elapsedRealtime()
+            }
+            binding.chronometer.setOnChronometerTickListener {
+                val elapsedMillis: Long = (SystemClock.elapsedRealtime() - binding.chronometer.base)
+                if (elapsedMillis / i in 20001..20999) {
+                    i++
+                    if (count == 0) {
+                        count = 1
+                        binding.constLayout.setBackgroundResource(R.color.black)
+                    } else {
+                        count = 0
+                        binding.constLayout.setBackgroundResource(R.color.white)
+                    }
                 }
             }
         }
